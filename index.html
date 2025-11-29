@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哆哆的爱心生成器</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; }
+        body { background: #fdf2f8; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(224, 36, 94, 0.1); }
+        h1 { color: #e0245e; font-size: 28px; margin-bottom: 20px; text-align: center; }
+        .input-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 15px; border: 2px solid #fee2ec; border-radius: 8px; font-size: 16px; }
+        button { padding: 0 20px; background: #e0245e; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #c2185b; }
+        .heart-container { 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            overflow-x: auto; 
+            white-space: pre; 
+            font-family: "Consolas", monospace; 
+            font-size: 14px; 
+            line-height: 1.2; 
+            color: #e0245e;
+            min-height: 200px;
+        }
+        .tip { margin-top: 15px; font-size: 14px; color: #718096; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>哆哆的爱心生成器</h1>
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="输入“我是哆哆”试试～" autocomplete="off">
+            <button onclick="generateHeart()">生成爱心</button>
+        </div>
+        <div class="heart-container" id="heartResult">
+            输入“我是哆哆”即可生成爱心哦 ❤️
+        </div>
+        <div class="tip">可以复制爱心发给TA～</div>
+    </div>
+
+    <script>
+        // 生成爱心的核心函数（复刻Python逻辑）
+        function generateBeautifulHeart() {
+            const heart = Array(40).fill().map(() => Array(120).fill("  "));
+            
+            for (let angle = 0; angle < 360; angle++) {
+                const rad = Math.PI * angle / 180;
+                const x = 16 * Math.pow(Math.sin(rad), 3);
+                const y = 13 * Math.cos(rad) - 5 * Math.cos(2*rad) - 2 * Math.cos(3*rad) - Math.cos(4*rad);
+                
+                const xCoord = Math.round(x * 3) + 60;
+                const yCoord = Math.round(-y * 1.5) + 20;
+                
+                if (xCoord >= 0 && xCoord < 120 && yCoord >= 0 && yCoord < 40) {
+                    heart[yCoord][xCoord] = "爱你";
+                    if (xCoord + 1 < 120) heart[yCoord][xCoord + 1] = "爱你";
+                    if (xCoord - 1 >= 0) heart[yCoord][xCoord - 1] = "爱你";
+                    if (yCoord + 1 < 40) heart[yCoord + 1][xCoord] = "爱你";
+                    if (yCoord - 1 >= 0) heart[yCoord - 1][xCoord] = "爱你";
+                }
+            }
+            
+            return heart.map(row => row.join("")).join("\n");
+        }
+
+        // 点击按钮触发的逻辑
+        function generateHeart() {
+            const input = document.getElementById("userInput").value.trim();
+            const resultElement = document.getElementById("heartResult");
+            
+            if (input === "我是哆哆") {
+                resultElement.textContent = generateBeautifulHeart();
+                resultElement.style.color = "#e0245e";
+            } else {
+                resultElement.textContent = "请输入“我是哆哆”来生成爱心～";
+                resultElement.style.color = "#718096";
+            }
+        }
+    </script>
+</body>
+</html>
